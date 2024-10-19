@@ -8,29 +8,29 @@ public class PlayingField {
     public PlayingField() {
 
 
-        CardComponent card1 = new CardComponent("anteater.png");
+        CardComponent card1 = new CardComponent("anteater_img.png");
 
-        CardComponent card2 = new CardComponent("fox.png");
+        CardComponent card2 = new CardComponent("fox_img.png");
 
-        CardComponent card3 = new CardComponent("hippo.png");
+        CardComponent card3 = new CardComponent("hippo_img.png");
 
-        CardComponent card4 = new CardComponent("horse.png");
+        CardComponent card4 = new CardComponent("horse_img.png");
 
-        CardComponent card5 = new CardComponent("lizard.png");
+        CardComponent card5 = new CardComponent("lizard_img.png");
 
-        CardComponent card6 = new CardComponent("penguin.png");
+        CardComponent card6 = new CardComponent("penguin_img.png");
 
-        CardComponent card7 = new CardComponent("anteaterText.png");
+        CardComponent card7 = new CardComponent("anteater_text.png");
 
-        CardComponent card8 = new CardComponent("foxText.png");
+        CardComponent card8 = new CardComponent("fox_text.png");
 
-        CardComponent card9 = new CardComponent("hippoText.png");
+        CardComponent card9 = new CardComponent("hippo_text.png");
 
-        CardComponent card10 = new CardComponent("horseText.png");
+        CardComponent card10 = new CardComponent("horse_text.png");
 
-        CardComponent card11 = new CardComponent("lizardText.png");
+        CardComponent card11 = new CardComponent("lizard_text.png");
 
-        CardComponent card12 = new CardComponent("penguinText.png");
+        CardComponent card12 = new CardComponent("penguin_text.png");
 
 
         JFrame frame = new JFrame("GridLayout");

@@ -19,16 +19,16 @@ class CardComponent extends JComponent {
 
 
         // Front image
-        ImageIcon frontIcon = new ImageIcon("src/com/java/main/resources/images/frontImages/" + fileName);
+        ImageIcon frontIcon = new ImageIcon("src/main/resources/images/cards/cardfaces/" + fileName);
         frontImage = frontIcon.getImage();
 
         // Back image
-        ImageIcon backIcon = new ImageIcon("src/com/java/main/resources/images/backIcon.png");
+        ImageIcon backIcon = new ImageIcon("src/main/resources/images/cards/back_design.png");
         backImage = backIcon.getImage();
 
         //Sound
         try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("src/com/java/main/resources/audio/flipSound.wav"));
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/flip_sfx.wav"));
             clip = AudioSystem.getClip();
             clip.open(audioStream);
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
