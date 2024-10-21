@@ -1,36 +1,70 @@
 package main.java.com.tue;
 
+import javax.smartcardio.Card;
 import javax.swing.*;
 import javax.swing.JFrame;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class PlayingField {
-    public PlayingField() {
+public class PlayingField implements CardFlipListener{
+    private List<CardComponent> userPickedCards = new ArrayList<>();
+
+    private static List<CardComponent> cardGenerator(Level level){
+        List<CardComponent> cards = new ArrayList<>();
+        Path folderPath = Paths.get("src/main/resources/images/cards/cardfaces/" + level.toString().toLowerCase());
+
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
+            for (Path entry : stream) {
+                CardComponent card = new CardComponent(entry.getFileName().toString(), level);
+                cards.add(card);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return cards;
+    }
+
+    private void GameLogic() {
+        if (userPickedCards.size() == 2) {
+            CardComponent firstPickedCard = userPickedCards.get(0);
+            CardComponent secondPickedCard = userPickedCards.get(1);
+
+            if (firstPickedCard.getName().equals(secondPickedCard.getName())) {
+                firstPickedCard.setCardForeverRevealed();
+                secondPickedCard.setCardForeverRevealed();
+            } else {
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        firstPickedCard.flipDownCard();
+                        secondPickedCard.flipDownCard();
+                    }
+                });
+                timer.setRepeats(false); // Ensure the timer only runs once
+                timer.start();
+            }
+            userPickedCards.clear();
+        }
+    }
 
 
-        CardComponent card1 = new CardComponent("anteater_img.png");
+    public PlayingField(Level level) {
 
-        CardComponent card2 = new CardComponent("fox_img.png");
+        List<CardComponent> cards = cardGenerator(level);
+        for (CardComponent card : cards) {
+            card.setCardFlipListener(this);
+        }
 
-        CardComponent card3 = new CardComponent("hippo_img.png");
-
-        CardComponent card4 = new CardComponent("horse_img.png");
-
-        CardComponent card5 = new CardComponent("lizard_img.png");
-
-        CardComponent card6 = new CardComponent("penguin_img.png");
-
-        CardComponent card7 = new CardComponent("anteater_text.png");
-
-        CardComponent card8 = new CardComponent("fox_text.png");
-
-        CardComponent card9 = new CardComponent("hippo_text.png");
-
-        CardComponent card10 = new CardComponent("horse_text.png");
-
-        CardComponent card11 = new CardComponent("lizard_text.png");
-
-        CardComponent card12 = new CardComponent("penguin_text.png");
+        Collections.shuffle(cards);
 
 
         JFrame frame = new JFrame("GridLayout");
@@ -65,18 +99,9 @@ public class PlayingField {
         MyPanel.setBackground(Color.white);
 
 
-        MyPanel.add(card2);
-        MyPanel.add(card11);
-        MyPanel.add(card4);
-        MyPanel.add(card9);
-        MyPanel.add(card12);
-        MyPanel.add(card5);
-        MyPanel.add(card3);
-        MyPanel.add(card6);
-        MyPanel.add(card7);
-        MyPanel.add(card1);
-        MyPanel.add(card8);
-        MyPanel.add(card10);
+        for (CardComponent card : cards) {
+            MyPanel.add(card);
+        }
 
 
         frame.getContentPane().add(MyPanel, "Center"); // Paste MyPanel into JFrame
