@@ -78,7 +78,17 @@ public class MainGame implements ActionListener {
         } else if (source == goBack) {
             returnToMainMenu();
         } else if (source == playButton) {
-            levelMenu();
+            boolean completed = true;
+            for(int i = 0; i < levels.length; i++){
+                if(!levels[i]){
+                    completed = false;
+                }
+            }
+            if(completed){
+                congratulations();
+            } else {
+                levelMenu();
+            }
 
         }
 
@@ -161,6 +171,15 @@ public class MainGame implements ActionListener {
             drawStar(levels[i], i);
         }
     }
+
+    private void congratulations(){
+        JFrame congratFrame = new JFrame("Congratulations!");
+        JPanel endScreen = new JPanel(new BorderLayout());
+        congratFrame.setSize(498, 500);
+        JLabel congrats  = new JLabel(new ImageIcon("src/congratulations.gif"));
+        endScreen.add(congrats);
+        congratFrame.add(endScreen, BorderLayout.CENTER);
+        congratFrame.setVisible(true);
     }
     public static void main(String[] args) {
         new MainGame(); // Ensure thread safety
