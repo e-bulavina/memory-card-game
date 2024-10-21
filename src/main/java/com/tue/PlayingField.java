@@ -109,9 +109,10 @@ public class PlayingField implements CardFlipListener{
         frame.setSize(1400, 1200);
         frame.setVisible(true);
     }
-
-
-    public static void main(String[] args) {
-        new PlayingField();
+    @Override
+    public void onCardFlip(CardComponent card) {
+        userPickedCards.add(card);
+        GameLogic();
     }
+
 }
