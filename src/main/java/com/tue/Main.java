@@ -13,7 +13,7 @@ import java.util.Map;
 public class MainGame implements ActionListener {
     JFrame frame = new JFrame("Memory Card Game");
     JButton buttonInfo = new JButton(new ImageIcon("src/infobutton.png"));
-    JButton goBack = new JButton(new ImageIcon("src/menuButton.png"));
+    JButton goBack = new JButton(new ImageIcon("src/backButton.png"));
     JButton level1 = new JButton(new ImageIcon("src/level1.png"));
     JButton level2 = new JButton(new ImageIcon("src/level2.png"));
     JButton level3 = new JButton(new ImageIcon("src/level3.png"));
@@ -21,7 +21,7 @@ public class MainGame implements ActionListener {
     JPanel startScreen = new JPanel();
     JPanel instructionScreen = new JPanel(new BorderLayout());
     JLabel backGround = new JLabel(new ImageIcon("src/background.png"));
-    Boolean[] levels = new Boolean[]{true, true, true, true};
+    Boolean[] levels = new Boolean[]{false, false, false, false};
 
 
     public MainGame() {
@@ -103,7 +103,8 @@ public class MainGame implements ActionListener {
         goBack.addActionListener(this);
 
         instructionScreen.add(instructions);
-        instructionScreen.add(goBack, BorderLayout.SOUTH);
+        goBack.setBounds(200, 530, 102, 54);
+        frame.add(goBack);
         frame.add(instructionScreen);
         instructionScreen.revalidate();
 
@@ -150,6 +151,7 @@ public class MainGame implements ActionListener {
 
         // Reset to start screen
         startScreen.removeAll();
+        goBack.setVisible(false);
         buttonInfo.setVisible(true);
         playButton.setVisible(true);
         startScreen.add(backGround);
