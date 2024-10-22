@@ -35,6 +35,9 @@ public class Main implements ActionListener {
         buttonInfo.addActionListener(this);
         playButton.setBorder(BorderFactory.createEmptyBorder());
         playButton.setBounds(405, 505, 192, 42);
+        level1.addActionListener(this);
+        level2.addActionListener(this);
+        level3.addActionListener(this);
         level1.setBorder(BorderFactory.createEmptyBorder());
         level1.setBounds(250, 250, 100, 100);
         playButton.addActionListener(this);
@@ -59,6 +62,12 @@ public class Main implements ActionListener {
             returnToMainMenu();
         } else if (source == playButton) {
             levelMenu();
+        } else if (source == level1) {
+            playLevel(Level.ANIMALS);
+        } else if (source == level2) {
+            playLevel(Level.PLANTS);
+        } else if (source == level3) {
+            playLevel(Level.RELIEF);
         }
 
     }
@@ -99,8 +108,8 @@ public class Main implements ActionListener {
         buttonInfo.setVisible(false);
     }
 
-    private void playLevel(){
-
+    private void playLevel(Level level){
+        new PlayingField(level);
     }
 
     private void returnToMainMenu() {
@@ -118,6 +127,6 @@ public class Main implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Main(); // Ensure thread safety
+        new Main();
     }
 }
