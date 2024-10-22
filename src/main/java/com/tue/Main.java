@@ -35,6 +35,7 @@ public class MainGame implements ActionListener {
         frame.setLayout(new BorderLayout());
     }
 
+
     private void setupAudio() {
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("src/winning_sound.wav"));
@@ -104,6 +105,12 @@ public class MainGame implements ActionListener {
             congratulations();
         } else {
             levelMenu();
+        } else if (source == level1) {
+            playLevel(Level.ANIMALS);
+        } else if (source == level2) {
+            playLevel(Level.PLANTS);
+        } else if (source == level3) {
+            playLevel(Level.RELIEF);
         }
     }
 
@@ -137,6 +144,12 @@ public class MainGame implements ActionListener {
         playButton.setVisible(false);
         buttonInfo.setVisible(false);
     }
+
+
+    private void playLevel(Level level){
+        new PlayingField(level);
+    }
+
 
     private void returnToMainMenu() {
         instructionScreen.removeAll();
