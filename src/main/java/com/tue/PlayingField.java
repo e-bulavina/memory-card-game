@@ -1,8 +1,6 @@
-package main.java.com.tue;
+package code;
 
-import javax.smartcardio.Card;
 import javax.swing.*;
-import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,12 +13,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PlayingField implements CardFlipListener{
+public class PlayingField implements CardFlipListener {
     private List<CardComponent> userPickedCards = new ArrayList<>();
+    private int totalPairs; // Total pairs of cards
+    private int matchedPairs = 0; // Number of matched pairs
+    private MainGame mainGame; // Reference to MainGame
+    private Level level; // Current level
 
-    private static List<CardComponent> cardGenerator(Level level){
+    // Method to generate cards based on the level
+    private static List<CardComponent> cardGenerator(Level level) {
         List<CardComponent> cards = new ArrayList<>();
-        Path folderPath = Paths.get("src/main/resources/images/cards/cardfaces/" + level.toString().toLowerCase());
+        Path folderPath = Paths.get("src/resources/images/cards/cardfaces/" + level.toString().toLowerCase());
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
             for (Path entry : stream) {
@@ -33,6 +36,7 @@ public class PlayingField implements CardFlipListener{
         return cards;
     }
 
+    // Game logic for flipping cards
     private void GameLogic() {
         if (userPickedCards.size() == 2) {
             CardComponent firstPickedCard = userPickedCards.get(0);
@@ -41,6 +45,12 @@ public class PlayingField implements CardFlipListener{
             if (firstPickedCard.getName().equals(secondPickedCard.getName())) {
                 firstPickedCard.setCardForeverRevealed();
                 secondPickedCard.setCardForeverRevealed();
+                matchedPairs++; // Increment matched pairs
+
+                // Check if all pairs are matched
+                if (matchedPairs == totalPairs) {
+                    notifyGameCompletion(); // Notify MainGame that the game is complete
+                }
             } else {
                 Timer timer = new Timer(1000, new ActionListener() {
                     @Override
@@ -56,9 +66,10 @@ public class PlayingField implements CardFlipListener{
         }
     }
 
-
-    public PlayingField(Level level) {
-
+    // Constructor to initialize PlayingField with MainGame reference
+    public PlayingField(MainGame mainGame, Level level) {
+        this.mainGame = mainGame;
+        this.level = level; // Set current level
         List<CardComponent> cards = cardGenerator(level);
         for (CardComponent card : cards) {
             card.setCardFlipListener(this);
@@ -106,13 +117,20 @@ public class PlayingField implements CardFlipListener{
 
         frame.getContentPane().add(MyPanel, "Center"); // Paste MyPanel into JFrame
 
-        frame.setSize(1400, 1200);
+        frame.setSize(1000, 800);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
+        totalPairs = cards.size() / 2; // Calculate total pairs
     }
-    @Override
+    // Notify MainGame when the level is completed
+    private void notifyGameCompletion() {
+        mainGame.levelCompleted(level); // Notify MainGame about level completion
+    }
+
+    // Handle card flips
     public void onCardFlip(CardComponent card) {
         userPickedCards.add(card);
         GameLogic();
     }
-
 }
