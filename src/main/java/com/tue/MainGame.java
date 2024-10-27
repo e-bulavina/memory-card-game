@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainGame implements ActionListener {
+    private PlayingField playingField;
+
     private Clip clip; // For audio playback
     private JFrame frame; // Main game window
     private JButton buttonInfo; // Button to show game instructions
@@ -104,10 +106,12 @@ public class MainGame implements ActionListener {
     }
 
     private void playLevel(Level level) {
-        new PlayingField(this, level); // Start a new playing field for the selected level
+        playingField = new PlayingField(this, level); // Start a new playing field for the selected level
     }
 
     public void levelCompleted(Level level) {
+        playingField.close();
+        playingField = null;
         // Mark the completed level
         if (level == Level.PLANTS) {
             levels[0] = true; // Level 1 completed
@@ -202,6 +206,7 @@ public class MainGame implements ActionListener {
         JLabel star = new JLabel(new ImageIcon(filled ? "src/main/resources/images/buttonicons/full_star.png" : "src/main/resources/images/buttonicons/empty_star.png")); // Load star icon
         star.setBounds(540 + 100 * position, 5, 60, 60); // Set star position
         backGround.add(star); // Add star to background
+
     }
 
     private void congratulations() {

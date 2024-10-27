@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class PlayingField implements CardFlipListener {
     private List<CardComponent> userPickedCards = new ArrayList<>();
+    private JFrame frame;
     private int totalPairs; // Total pairs of cards
     private int matchedPairs = 0; // Number of matched pairs
     private MainGame mainGame; // Reference to MainGame
@@ -78,7 +80,7 @@ public class PlayingField implements CardFlipListener {
         Collections.shuffle(cards);
 
 
-        JFrame frame = new JFrame("GridLayout");
+        frame = new JFrame("GridLayout");
 
         JPanel panel1 = new JPanel();
         JPanel panel2 = new JPanel();
@@ -132,5 +134,16 @@ public class PlayingField implements CardFlipListener {
     public void onCardFlip(CardComponent card) {
         userPickedCards.add(card);
         GameLogic();
+    }
+
+    public void close() {
+        Timer timer = new Timer(1500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+        timer.setRepeats(false); // Ensure the timer only runs once
+        timer.start();
     }
 }
