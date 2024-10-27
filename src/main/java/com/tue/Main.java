@@ -9,25 +9,31 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainGame implements ActionListener {
-    private Clip clip; // Audio clip for sounds
-    private JFrame frame; // Main application window
-    private JButton buttonInfo, goBack, level1, level2, level3, playButton; // UI buttons
-    private JPanel startScreen, instructionScreen; // Panels for UI
-    private JLabel backGround; // Background image
-    public static Boolean[] levels; // Completed levels tracking
+    private Clip clip;
+    private JFrame frame;
+    private JButton buttonInfo;
+    private JButton goBack;
+    private JButton level1;
+    private JButton level2;
+    private JButton level3;
+    private JButton playButton;
+    private JPanel startScreen;
+    private JPanel instructionScreen;
+    private JLabel backGround;
+    public static Boolean[] levels;
 
     public MainGame() {
-        initializeGame(); // Initialize game settings
-        setupAudio(); // Set up audio
-        setupUI(); // Set up the user interface
+        initializeGame();
+        setupAudio();
+        setupUI();
     }
 
     private void initializeGame() {
-        levels = new Boolean[]{false, false, false}; // Levels not completed
-        frame = new JFrame("Memory Card Game"); // Main window
-        startScreen = new JPanel(); // Start screen panel
-        instructionScreen = new JPanel(new BorderLayout()); // Instructions panel
-        backGround = new JLabel(new ImageIcon("src/resources/images/background.png")); // Background image
+        levels = new Boolean[]{false, false, false};
+        frame = new JFrame("Memory Card Game");
+        startScreen = new JPanel();
+        instructionScreen = new JPanel(new BorderLayout());
+        backGround = new JLabel(new ImageIcon("src/resources/images/background.png"));
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 800);
@@ -38,10 +44,10 @@ public class MainGame implements ActionListener {
     private void setupAudio() {
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("src/resources/audio/winning_sound.wav"));
-            clip = AudioSystem.getClip(); // Create audio clip
-            clip.open(audioStream); // Open audio stream
-        } catch (Exception e) {
-            e.printStackTrace(); // Handle audio errors
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -61,12 +67,11 @@ public class MainGame implements ActionListener {
         frame.add(playButton);
         frame.add(startScreen, BorderLayout.CENTER);
 
-        // Initially hide level buttons
         level1.setVisible(false);
         level2.setVisible(false);
         level3.setVisible(false);
 
-        frame.setVisible(true); // Show the window
+        frame.setVisible(true);
     }
 
     private JButton createButton(String iconPath, ActionListener listener, int x, int y, int width, int height) {
@@ -81,43 +86,46 @@ public class MainGame implements ActionListener {
     public void actionPerformed(ActionEvent click) {
         Object source = click.getSource();
         if (source == buttonInfo) {
-            showInstructions(); // Show instructions
+            showInstructions();
         } else if (source == goBack) {
-            returnToMainMenu(); // Return to main menu
+            returnToMainMenu();
         } else if (source == playButton) {
-            levelMenu(); // Show level selection
+            levelMenu();
         } else if (source == level1) {
-            playLevel(Level.PLANTS); // Start level 1
+            playLevel(Level.PLANTS);
         } else if (source == level2) {
-            playLevel(Level.ANIMALS); // Start level 2
+            playLevel(Level.ANIMALS);
         } else if (source == level3) {
-            playLevel(Level.ANIMALS); // Start level 3
+            playLevel(Level.RELIEF);
         }
     }
 
     private void playLevel(Level level) {
-        new PlayingField(this, level); // Launch specified level
+        new PlayingField(this, level); // Pass reference to MainGame
     }
 
     public void levelCompleted(Level level) {
         if (level == Level.PLANTS) {
             levels[0] = true; // Mark level 1 as completed
         } else if (level == Level.ANIMALS) {
-            levels[1] = levels[1] ? true : true; // Mark level 2 or 3
+            levels[1] = true;
+        } else if (level == Level.RELIEF){
             levels[2] = true;
         }
 
         levelMenu(); // Update star display
         if (allLevelsPassed()) {
-            congratulations(); // Show congratulations if all levels completed
+            congratulations();
         }
     }
 
     private boolean allLevelsPassed() {
         for (Boolean levelPassed : levels) {
-            if (!levelPassed) return false; // At least one level not passed
+            if (!levelPassed) {
+                return false; // At least one level is not passed
+            }
         }
-        return true; // All levels passed
+        return true; // All levels are passed
     }
 
     private void showInstructions() {
@@ -128,29 +136,28 @@ public class MainGame implements ActionListener {
         frame.add(goBack);
         frame.add(instructionScreen);
 
-        startScreen.removeAll(); // Clear start screen
+        startScreen.removeAll();
         startScreen.add(instructionScreen);
-        buttonInfo.setVisible(false); // Hide info button
-        playButton.setVisible(false); // Hide play button
-        startScreen.revalidate(); // Update UI
+        buttonInfo.setVisible(false);
+        playButton.setVisible(false);
+        startScreen.revalidate();
         startScreen.repaint();
     }
 
     private void levelMenu() {
-        startScreen.removeAll(); // Clear previous components
+        startScreen.removeAll();
         backGround = new JLabel(new ImageIcon("src/resources/images/levelBackground.png"));
         startScreen.add(backGround);
 
-        level1.setVisible(true); // Show level buttons
+        level1.setVisible(true);
         level2.setVisible(true);
         level3.setVisible(true);
 
-        displayStars(); // Display stars for completed levels
+        displayStars();
 
-        playButton.setVisible(false); // Hide play button
-        buttonInfo.setVisible(false); // Hide info button
+        playButton.setVisible(false);
+        buttonInfo.setVisible(false);
 
-        // Revalidate and repaint to update UI
         level1.revalidate();
         level1.repaint();
         level2.revalidate();
@@ -162,15 +169,15 @@ public class MainGame implements ActionListener {
     }
 
     private void returnToMainMenu() {
-        instructionScreen.removeAll(); // Clear instruction screen
+        instructionScreen.removeAll();
         instructionScreen.revalidate();
         instructionScreen.repaint();
 
-        startScreen.removeAll(); // Clear start screen
-        goBack.setVisible(false); // Hide go back button
-        buttonInfo.setVisible(true); // Show info button
-        playButton.setVisible(true); // Show play button
-        startScreen.add(backGround); // Add background to start screen
+        startScreen.removeAll();
+        goBack.setVisible(false);
+        buttonInfo.setVisible(true);
+        playButton.setVisible(true);
+        startScreen.add(backGround);
         startScreen.revalidate();
         startScreen.repaint();
     }
@@ -178,21 +185,20 @@ public class MainGame implements ActionListener {
     private void displayStars() {
         backGround.removeAll(); // Clear previous stars
         for (int i = 0; i < levels.length; i++) {
-            drawStar(levels[i], i); // Draw star for each level
+            drawStar(levels[i], i);
         }
-        backGround.revalidate(); // Update background
+        backGround.revalidate();
         backGround.repaint();
     }
 
     private void drawStar(boolean filled, int position) {
-        // Draw a star based on completion status
         JLabel star = new JLabel(new ImageIcon(filled ? "src/resources/images/fullStar.png" : "src/resources/images/emptyStar.png"));
         star.setBounds(540 + 100 * position, 5, 60, 60);
-        backGround.add(star); // Add star to background
+        backGround.add(star);
     }
 
     private void congratulations() {
-        JFrame congratFrame = new JFrame("Congratulations!"); // Congratulations window
+        JFrame congratFrame = new JFrame("Congratulations!");
         JPanel endScreen = new JPanel(new BorderLayout());
         congratFrame.setSize(500, 500);
         congratFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -202,13 +208,13 @@ public class MainGame implements ActionListener {
         congratFrame.add(endScreen, BorderLayout.CENTER);
 
         if (clip != null) {
-            clip.setFramePosition(0); // Reset audio clip
-            clip.start(); // Play audio
+            clip.setFramePosition(0);
+            clip.start();
         }
-        congratFrame.setVisible(true); // Show congratulations window
+        congratFrame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainGame::new); // Launch game
+        SwingUtilities.invokeLater(MainGame::new); // Ensures thread safety
     }
 }
