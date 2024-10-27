@@ -53,7 +53,8 @@ For the resources on [GitHub](https://docs.github.com/en), we mostly relied on G
 Other than that, we used articles from various sites:\
 [W3 Schools](https://www.w3schools.com/git/)\
 [StackOverflow](https://stackoverflow.com/)\
-[HubSpot](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners)
+[HubSpot](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners)\
+Our public GitHub repository is available [here](https://github.com/e-bulavina/memory-card-game).
 
 
 
