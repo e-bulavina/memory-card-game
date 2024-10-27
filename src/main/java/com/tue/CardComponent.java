@@ -11,7 +11,6 @@ import java.io.IOException;
 class CardComponent extends JComponent {
     private CardFlipListener cardFlipListener;
     private final String name;
-    private final CardType cardType;
     private final Image frontImage;
     private final Image backImage;
     private Clip clip;
@@ -28,7 +27,6 @@ class CardComponent extends JComponent {
         String name = fileName.split("_")[0];
         String cardType = fileName.split("_")[1].split("[.]", 0)[0];
         this.name = name;
-        this.cardType = CardType.valueOf(cardType.toUpperCase());
 
 
         // Front image
@@ -39,7 +37,7 @@ class CardComponent extends JComponent {
         ImageIcon backIcon = new ImageIcon("src/main/resources/images/cards/back_design.png");
         backImage = backIcon.getImage();
 
-        //Sound
+        // Adding sound when cards are flipped
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audio/flip_sfx.wav"));
             clip = AudioSystem.getClip();
@@ -49,6 +47,7 @@ class CardComponent extends JComponent {
         }
 
 
+        // Card flipping logic
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -57,11 +56,13 @@ class CardComponent extends JComponent {
                     repaint();
 
                     if (clip != null) {
+                        // Play sound
                         clip.setFramePosition(0);
                         clip.start();
                     }
 
                     if (cardFlipListener != null) {
+                        // Trigger card flip listener
                         cardFlipListener.onCardFlip(CardComponent.this);
                     }
                 }
@@ -78,7 +79,7 @@ class CardComponent extends JComponent {
         isForeverRevealed = true;
     }
 
-
+    // Rendering the component
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -86,7 +87,7 @@ class CardComponent extends JComponent {
 
         Image currentImage = isRevealed ? frontImage : backImage;
         if (currentImage != null) {
-            g.drawImage(currentImage, 0, 0, 300, 300, this);
+            g.drawImage(currentImage, 0, 0, 225, 225, this);
         }
     }
 

@@ -1,4 +1,4 @@
-package code;
+package main.java.com.tue;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +23,7 @@ public class PlayingField implements CardFlipListener {
     // Method to generate cards based on the level
     private static List<CardComponent> cardGenerator(Level level) {
         List<CardComponent> cards = new ArrayList<>();
-        Path folderPath = Paths.get("src/resources/images/cards/cardfaces/" + level.toString().toLowerCase());
+        Path folderPath = Paths.get("src/main/resources/images/cards/cardfaces/" + level.toString().toLowerCase());
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
             for (Path entry : stream) {
@@ -125,7 +125,7 @@ public class PlayingField implements CardFlipListener {
     }
     // Notify MainGame when the level is completed
     private void notifyGameCompletion() {
-        mainGame.levelCompleted(level); // Notify MainGame about level completion
+        mainGame.levelCompleted(level);
     }
 
     // Handle card flips
