@@ -211,4 +211,15 @@ public class MainGame implements ActionListener {
         congratFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close on exit
         congratFrame.setLocationRelativeTo(null); // Center window
         JLabel congrats = new JLabel(new ImageIcon("src/main/resources/images/misc/congratulations.gif")); // Load congratulations animation
-        end
+        endScreen.add(congrats);
+        congratFrame.add(endScreen, BorderLayout.CENTER);
+        if (clip != null) {
+            clip.setFramePosition(0);
+            clip.start();
+        }
+        congratFrame.setVisible(true);
+    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(MainGame::new); // Ensures thread safety
+    }
+}
